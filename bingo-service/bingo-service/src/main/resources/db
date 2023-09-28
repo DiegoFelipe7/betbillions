@@ -1,0 +1,28 @@
+
+CREATE TABLE lottery (
+    id SERIAL PRIMARY KEY,
+    uuid VARCHAR(200) UNIQUE,
+    created_at TIMESTAMP DEFAULT now(),
+    start_date TIMESTAMP,
+    number_of_rounds INTEGER,
+    players TEXT[] DEFAULT ARRAY[]::TEXT[],
+    price NUMERIC,
+    state_lottery VARCHAR(200)
+);
+
+CREATE TABLE round (
+  id SERIAL PRIMARY KEY,
+  uuid VARCHAR(200),
+  id_lottery VARCHAR(200) NOT NULL,
+  type_game VARCHAR(2) NOT NULL,
+  number_round INT,
+  award NUMERIC NOT NULL,
+  balls TEXT[] DEFAULT ARRAY[]::TEXT[],
+  user_winner VARCHAR(200),
+  state_round VARCHAR(20) ,
+  completed BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP
+);
+
+

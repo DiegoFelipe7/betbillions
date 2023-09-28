@@ -1,0 +1,14 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost/bingo
+    username: postgres
+    password: postgres
+  data:
+    mongodb:
+      uri: "mongodb+srv://dbuser:DMekHRirbSkdNyfj@cluster0.s4e6i.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+  application:
+    name: bingo-service
+
+
+
+

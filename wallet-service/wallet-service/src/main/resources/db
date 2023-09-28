@@ -1,0 +1,23 @@
+CREATE TABLE "user_wallet" (
+  id SERIAL PRIMARY KEY,
+  uuid VARCHAR(800),
+  balance NUMERIC DEFAULT 0,
+  available_balance NUMERIC DEFAULT 0,
+  user_id  VARCHAR(200) NOT NULL UNIQUE,
+  walletId VARCHAR(800),
+  state BOOLEAN DEFAULT true,
+  currency VARCHAR(255) DEFAULT 'USD',
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP
+);
+
+CREATE TABLE "payment_history" (
+  id SERIAL PRIMARY KEY,
+  balance NUMERIC,
+  currency VARCHAR(255) DEFAULT 'USD',
+  user_id  INT NOT NULL,
+  type_history VARCHAR(800),
+  state BOOLEAN DEFAULT true,
+  created_at TIMESTAMP DEFAULT now()
+);
+

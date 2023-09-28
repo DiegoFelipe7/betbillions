@@ -1,0 +1,13 @@
+spring:
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: false
+  r2dbc:
+    url: r2dbc:postgresql://localhost/wallet
+    username: postgres
+    password: postgres
+  application:
+    name: wallet-service
+

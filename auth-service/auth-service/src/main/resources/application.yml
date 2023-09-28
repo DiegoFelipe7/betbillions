@@ -1,0 +1,26 @@
+spring:
+  thymeleaf:
+    enabled: true
+    prefix: classpath:/templates/
+    suffix: .html
+    check-template-location: false
+  r2dbc:
+    url: r2dbc:postgresql://173.249.47.119/betbillions
+    username: postgres
+    password: Lider123
+  application:
+    name: auth-service
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+jwt:
+  secret: 76397924423F4528482B4D6251655468576D5A7134743777217A25432A46294A
+  expiration: 3600
+bet_billions:
+  url: https://betbillions.com.co/
+  email:
+    sender: corporate@betbillions.com.co
+    password : Fara4020**
