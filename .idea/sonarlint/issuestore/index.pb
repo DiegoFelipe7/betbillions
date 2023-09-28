@@ -173,8 +173,6 @@ wbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/domain/us
 }bingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/domain/model/cardbingo/gateway/CardBingoRepository.java,0\9\09ec2141ebe3b6505ad4f468f1f4e44ffd726c96
 ¨
 xbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/infrastructure/api/cardbingo/CardBingoHandler.java,6\b\6bb5119fd2a98204484dba8b6b3ad438fdb05454
-U
-%wallet-service/wallet-service/pom.xml,c\f\cf82f51e5bf8159c6289e0786bae8bd878841963
 ›
 kwallet-service/wallet-service/src/main/java/com/betbillions/walletservice/application/config/ConfigApp.java,2\6\26195f1219fbe2fb4e8c3354cff5b6e7c18e5c9e
 ¤
