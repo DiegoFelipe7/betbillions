@@ -1,19 +1,16 @@
-package com.betbillions.walletservice.infrastructure.api.wallet;
-
-
+package com.betbillions.walletservice.infrastructure.api.history;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.RouterFunctions;
 import org.springframework.web.reactive.function.server.ServerResponse;
 @Configuration
-public class WalletRouter {
-    private static final String API_PATH ="api/wallet/";
+public class PaymentHistoryRouter {
+    private static final String API_PATH ="api/payment-history/";
     @Bean
-    public RouterFunction<ServerResponse> routerFunction(WalletHandler walletHandler){
+    public RouterFunction<ServerResponse> routerFunctionPayment(PaymentHistoryHandler paymentHistoryHandler){
         return RouterFunctions.route()
-                .GET(API_PATH+"list", walletHandler::getAllWallet)
-                .POST(API_PATH+"save" , walletHandler::createWallet)
+                .GET(API_PATH+"list" , paymentHistoryHandler::getHistoryUser)
                 .build();
     }
 }

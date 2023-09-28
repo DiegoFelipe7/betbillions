@@ -4,7 +4,7 @@ CREATE TABLE "user_wallet" (
   balance NUMERIC DEFAULT 0,
   available_balance NUMERIC DEFAULT 0,
   user_id  VARCHAR(200) NOT NULL UNIQUE,
-  walletId VARCHAR(800),
+  wallet_id VARCHAR(800),
   state BOOLEAN DEFAULT true,
   currency VARCHAR(255) DEFAULT 'USD',
   created_at TIMESTAMP DEFAULT now(),

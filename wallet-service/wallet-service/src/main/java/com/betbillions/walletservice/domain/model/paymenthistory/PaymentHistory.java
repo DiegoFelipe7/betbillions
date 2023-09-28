@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @Builder(toBuilder = true)
 public class PaymentHistory {
-    private Integer id;
+    private Long id;
     private BigDecimal balance ;
     private String currency;
     private Integer userId;

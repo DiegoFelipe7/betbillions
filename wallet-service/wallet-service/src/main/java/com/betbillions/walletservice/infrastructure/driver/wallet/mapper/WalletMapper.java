@@ -15,7 +15,7 @@ public class WalletMapper {
                 .id(walletEntity.getId())
                 .uuid(walletEntity.getUuid())
                 .balance(walletEntity.getBalance())
-               // .userId(walletEntity.getUserId())
+                .userId(walletEntity.getUserId())
                 .walletId(walletEntity.getWalletId())
                 .currency(walletEntity.getCurrency())
                 .availableBalance(walletEntity.getAvailableBalance())
