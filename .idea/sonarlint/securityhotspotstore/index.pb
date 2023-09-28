@@ -195,8 +195,6 @@ xwallet-service/wallet-service/src/main/java/com/betbillions/walletservice/domai
 ~wallet-service/wallet-service/src/main/java/com/betbillions/walletservice/infrastructure/driver/exception/CustomException.java,7\9\79a88404c36cb3534a46f81cd8bde9b36093038d
 ¨
 xwallet-service/wallet-service/src/main/java/com/betbillions/walletservice/domain/usecase/wallet/CreateWalletUseCase.java,8\a\8add0bbac5b06932ad61bfc039c950cd3d14a54a
-U
-%wallet-service/wallet-service/pom.xml,c\f\cf82f51e5bf8159c6289e0786bae8bd878841963
 ½
 Œwallet-service/wallet-service/src/main/java/com/betbillions/walletservice/infrastructure/driver/config/CustomWebMvcConfigurationSupport.java,b\7\b7f21ff13d07a1cc955ce3a59a184a3013e7d71b
 ¼

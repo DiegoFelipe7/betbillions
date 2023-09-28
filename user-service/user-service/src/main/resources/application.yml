@@ -1,0 +1,8 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost/auth
+    username: postgres
+    password: postgres
+  application:
+    name: wallet-service
+

@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="auth-service" />
+        <module name="user-service" />
         <module name="bingo-service" />
         <module name="eureka-server" />
         <module name="wallet-service" />
@@ -16,6 +17,7 @@
       <module name="auth-service" target="17" />
       <module name="bingo-service" target="17" />
       <module name="eureka-server" target="17" />
+      <module name="user-service" target="17" />
       <module name="wallet-service" target="17" />
     </bytecodeTargetLevel>
   </component>
@@ -24,6 +26,7 @@
       <module name="auth-service" options="-parameters" />
       <module name="bingo-service" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="user-service" options="-parameters" />
       <module name="wallet-service" options="-parameters" />
     </option>
   </component>
