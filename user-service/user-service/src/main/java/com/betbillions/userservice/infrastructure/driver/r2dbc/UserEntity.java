@@ -5,6 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class UserEntity {
     @Id
-    private String id;
+    private UUID id;
     private String username;
     private String email;
     private String fullName;

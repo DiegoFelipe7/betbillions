@@ -7,6 +7,7 @@ import com.betbillion.bingoservice.domain.usecase.lottery.GetAllLotteryUseCase;
 import com.betbillion.bingoservice.domain.usecase.lottery.GetLotteryIdUseCase;
 import com.betbillion.bingoservice.domain.usecase.lottery.InactiveLotteryUseCase;
 import com.betbillion.bingoservice.domain.usecase.lottery.SaveLotteryUseCase;
+import com.betbillion.bingoservice.infrastructure.driver.utils.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -33,7 +34,7 @@ public class LotteryHandler {
     public Mono<ServerResponse> getAllLottery(ServerRequest serverRequest){
         return  ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(getAllLotteryUseCase.get(),Lottery.class);
+                .body(getAllLotteryUseCase.apply(Pagination.pagination(serverRequest)),Lottery.class);
     }
 
     public Mono<ServerResponse> getLotteryId(ServerRequest serverRequest) {

@@ -6,14 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
-public class ReferenceTeamUseCase implements Function<String , Mono<Page<References>>> {
+public class ReferenceTeamUseCase implements Function<UUID , Mono<Page<References>>> {
     private final UserRepository usersRepository;
 
     @Override
-    public Mono<Page<References>> apply(String token) {
-        return usersRepository.getAllReferenceTeam(token);
+    public Mono<Page<References>> apply(UUID uuid) {
+        return usersRepository.getAllReferenceTeam(uuid);
     }
 }

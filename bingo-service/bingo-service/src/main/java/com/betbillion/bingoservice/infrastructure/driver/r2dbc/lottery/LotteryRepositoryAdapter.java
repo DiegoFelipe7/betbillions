@@ -3,6 +3,7 @@ package com.betbillion.bingoservice.infrastructure.driver.r2dbc.lottery;
 import com.betbillion.bingoservice.domain.model.enums.StateLottery;
 import com.betbillion.bingoservice.domain.model.lottery.Lottery;
 import com.betbillion.bingoservice.domain.model.lottery.LotteryDto;
+import com.betbillion.bingoservice.domain.model.lottery.PlayersLottery;
 import com.betbillion.bingoservice.domain.model.lottery.gateway.LotteryRepository;
 import com.betbillion.bingoservice.domain.model.round.gateway.RoundRepository;
 import com.betbillion.bingoservice.domain.model.utils.Response;
@@ -13,13 +14,14 @@ import com.betbillion.bingoservice.infrastructure.driver.helper.ReactiveAdapterO
 import com.betbillion.bingoservice.infrastructure.driver.r2dbc.lottery.mapper.LotteryMapper;
 import com.betbillion.bingoservice.infrastructure.driver.r2dbc.round.RoundRepositoryAdapter;
 import org.reactivecommons.utils.ObjectMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
-import reactor.core.publisher.Flux;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
 import java.math.BigDecimal;
-import java.util.Comparator;
 
 
 @Repository
@@ -29,6 +31,7 @@ public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery,
     public LotteryRepositoryAdapter(LotteryReactiveRepository repository, RoundRepositoryAdapter roundRepository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.mapBuilder(d, Lottery.LotteryBuilder.class).build());
         this.roundRepository = roundRepository;
+
     }
 
     @Override
@@ -39,42 +42,57 @@ public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery,
                 .thenReturn(new Response(TypeStateResponses.Success, "Sorteo creado exitosamente!"));
     }
 
+
     @Override
-    public Flux<Lottery> getAllLottery() {
-        return  repository.findAll()
-                .filter(ele->ele.getStateLottery().equals(StateLottery.PENDING))
+    public Mono<Page<Lottery>> getAllLottery(Pageable pageable) {
+        return repository.findAllBy(pageable)
+                .filter(ele -> ele.getStateLottery().equals(StateLottery.PENDING))
                 .map(LotteryMapper::lotteryEntityALottery)
-                .sort(Comparator.comparing(Lottery::getId));
+                .collectList()
+                .zipWith(repository.count())
+                .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2()));
     }
 
     @Override
     public Mono<LotteryDto> getLotteryId(String id) {
-       return repository.findByUuid(id)
+        return repository.findByUuid(id)
                 .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "El Juego no existe", TypeStateResponse.Error)))
                 .flatMap(ele -> roundRepository.getAllRoundsLottery(ele.getUuid())
                         .collectList()
                         .map(res -> LotteryMapper.lotteryDto(ele, res)));
     }
 
-
     @Override
     public Mono<Response> inactivateLottery(String id) {
         return repository.findByUuid(id)
-                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST,"Loteria invalida",TypeStateResponse.Success)))
-                .flatMap(ele->{
+                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "Loteria invalida", TypeStateResponse.Success)))
+                .flatMap(ele -> {
                     ele.setId(ele.getId());
                     ele.setStateLottery(StateLottery.FINALIZED);
                     return repository.save(ele)
                             .then(roundRepository.inactiveRounds(id))
-                            .thenReturn(new Response(TypeStateResponses.Success,"Loteria inactivada"));
+                            .thenReturn(new Response(TypeStateResponses.Success, "Loteria inactivada"));
                 });
     }
 
     @Override
     public Mono<BigDecimal> priceLottery(String id) {
         return repository.findByUuid(id)
-                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST,"El id de la loteria es invalida",TypeStateResponse.Success)))
+                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "El id de la loteria es invalida", TypeStateResponse.Success)))
                 .map(LotteryEntity::getPrice);
+    }
+
+    @Override
+    public Mono<Page<PlayersLottery>> getAllPlayers(Pageable pageable, String id) {
+        return repository.findAllByUuid(pageable, id)
+                .map(LotteryEntity::getPlayers)
+                .flatMap(ele -> WebClient.create().get()
+                            .uri("http://localhost:8081/api/users/", uriBuilder -> uriBuilder.queryParam("uuid", ele).build())
+                            .retrieve()
+                            .bodyToFlux(PlayersLottery.class)
+                            .collectList()
+                            .zipWith(repository.count())
+                            .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2())));
     }
 
 

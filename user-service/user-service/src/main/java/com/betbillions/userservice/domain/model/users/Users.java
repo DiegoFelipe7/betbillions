@@ -3,13 +3,15 @@ package com.betbillions.userservice.domain.model.users;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder(toBuilder = true)
 public class Users {
-    private String id;
+    private UUID id;
     private String username;
     private String email;
     private String fullName;
@@ -25,6 +27,7 @@ public class Users {
     private Boolean status;
     private Boolean commission;
     private Integer level;
+    private Integer position;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

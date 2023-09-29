@@ -1,0 +1,25 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE TABLE "users" (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  username VARCHAR(255) UNIQUE,
+  email VARCHAR(255) UNIQUE,
+  password VARCHAR(255),
+  full_name VARCHAR(255),
+  phone VARCHAR(255),
+  country VARCHAR(255),
+  city VARCHAR(255),
+  email_verified TIMESTAMP,
+  token VARCHAR(255),
+  photo VARCHAR(255),
+  ref_link VARCHAR(255),
+  invitation_link VARCHAR(255),
+  roles VARCHAR(255),
+  parent_id UUID,
+  status BOOLEAN DEFAULT false,
+  commission BOOLEAN DEFAULT false,
+  level INT,
+  position Serial,
+  created_at TIMESTAMP DEFAULT now(),
+  updated_at TIMESTAMP,
+  FOREIGN KEY (parent_id) REFERENCES users(id) ON DELETE SET NULL
+);

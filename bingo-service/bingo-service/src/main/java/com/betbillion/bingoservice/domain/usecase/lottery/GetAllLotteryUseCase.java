@@ -3,15 +3,16 @@ package com.betbillion.bingoservice.domain.usecase.lottery;
 import com.betbillion.bingoservice.domain.model.lottery.Lottery;
 import com.betbillion.bingoservice.domain.model.lottery.gateway.LotteryRepository;
 import lombok.RequiredArgsConstructor;
-import reactor.core.publisher.Flux;
-
-import java.util.function.Supplier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import reactor.core.publisher.Mono;
+import java.util.function.Function;
 
 @RequiredArgsConstructor
-public class GetAllLotteryUseCase implements Supplier<Flux<Lottery>> {
+public class GetAllLotteryUseCase implements Function<Pageable,Mono<Page<Lottery>>> {
     private final LotteryRepository lotteryRepositoryAdapter;
     @Override
-    public Flux<Lottery> get() {
-        return lotteryRepositoryAdapter.getAllLottery();
+    public Mono<Page<Lottery>> apply(Pageable pageable) {
+        return lotteryRepositoryAdapter.getAllLottery(pageable);
     }
 }

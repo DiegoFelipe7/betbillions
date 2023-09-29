@@ -12,10 +12,8 @@ import java.util.function.Function;
 @RequiredArgsConstructor
 public class GetAllUsersUseCase implements Function<Pageable ,Mono<Page<Users>>> {
     private final UserRepository usersRepository;
-
-
     @Override
     public Mono<Page<Users>> apply(Pageable pageable) {
-        return null;
+        return usersRepository.getAllUsers(pageable);
     }
 }

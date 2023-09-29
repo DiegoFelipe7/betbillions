@@ -8,37 +8,41 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+import java.util.UUID;
+
 @Repository
-public interface UsersReactiveRepository extends ReactiveCrudRepository<UserEntity, String>, ReactiveQueryByExampleExecutor<UserEntity> {
+public interface UsersReactiveRepository extends ReactiveCrudRepository<UserEntity, UUID>, ReactiveQueryByExampleExecutor<UserEntity> {
 
     Flux<UserEntity> findAllBy(Pageable pageable);
+    Flux<UserEntity> findByIdIn(List<String> uuid);
     @Query(value = """
     WITH RECURSIVE user_team AS (
       SELECT u.id, u.full_name, u.phone, u.username, u.created_at, 0 AS level
       FROM users u
-      WHERE u.username = :username
+      WHERE u.id = :uuid
       UNION ALL
       SELECT u.id, u.full_name, u.phone, u.username, u.created_at, ut.level + 1 AS level
       FROM users u 
       INNER JOIN user_team ut ON u.parent_id = ut.id
       WHERE ut.level < 4
     )
-    SELECT * FROM user_team WHERE username <> :username""")
-    Flux<UserEntity> findUserAndDescendantsTeam(@Param("username") String username);
+    SELECT * FROM user_team WHERE id <> :uuid""")
+    Flux<UserEntity> findUserAndDescendantsTeam(@Param("id") UUID uuid);
 
     @Query(value = """
     WITH RECURSIVE user_team AS (
-      SELECT u.id, u.full_name, u.phone, u.username, u.created_at, u.parent_id, 0 AS level ,  u.valid_for_commissions
+      SELECT u.id, u.full_name, u.phone, u.username, u.created_at, u.parent_id, 0 AS level ,  u.commission
       FROM users u
-      WHERE u.username = :username
+      WHERE u.id = :uuid
       UNION ALL
-      SELECT u.id, u.full_name, u.phone, u.username, u.created_at, u.parent_id, ut.level + 1 AS level , u.valid_for_commissions
+      SELECT u.id, u.full_name, u.phone, u.username, u.created_at, u.parent_id, ut.level + 1 AS level , u.commission
       FROM users u
       INNER JOIN user_team ut ON u.id = ut.parent_id
     )
     SELECT * FROM user_team
-    WHERE level <= :level and username <> :username and valid_for_commissions=true ;
+    WHERE level <= :level and id <> :uuid and commission=true ;
     """)
-    Flux<UserEntity> findUserAndParents(@Param("username") String username , @Param("level") Integer level);
+    Flux<UserEntity> findUserAndParents(@Param("id")  UUID uuid , @Param("level") Integer level);
 
 }
