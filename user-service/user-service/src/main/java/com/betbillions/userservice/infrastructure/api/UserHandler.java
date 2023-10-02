@@ -30,14 +30,15 @@ public class UserHandler {
                 .body(getAllUsersUseCase.apply(Pagination.pagination(serverRequest)), References.class);
     }
 
-   public Mono<ServerResponse> getUserId(ServerRequest serverRequest) {
-       UUID uuid = UUID.fromString(serverRequest.pathVariable("uuid"));
+   /* public Mono<ServerResponse> getUserId(ServerRequest serverRequest) {
+        String uuid = serverRequest.pathVariable("uuid");
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(getUserIdUseCase.apply(uuid), Users.class);
-    }
+    }*/
 
     public Mono<ServerResponse> getPlayersGame(ServerRequest serverRequest) {
+        System.out.println("entra a este metodo");
         List<String> playersId = serverRequest.queryParams().get("playersId");
         if(playersId==null){
             playersId = Collections.emptyList();
@@ -46,7 +47,6 @@ public class UserHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(getPlayersGameUseCase.apply(playersId), Users.class);
     }
-
 
 
 }

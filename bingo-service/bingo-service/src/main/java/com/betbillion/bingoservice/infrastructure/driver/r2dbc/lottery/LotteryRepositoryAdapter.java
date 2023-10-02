@@ -86,13 +86,13 @@ public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery,
 
     @Override
     public Mono<Page<PlayersLottery>> getAllPlayers(Pageable pageable, String id) {
-        System.out.println(id);
         return repository.findByUuid(id)
+                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST,"Id de la loteria invalida", TypeStateResponse.Error)))
                 .map(LotteryEntity::getPlayers)
                 .flatMap(ele -> WebClient.create().get()
                         .uri("http://localhost:8081/api/users/players", uriBuilder -> uriBuilder.queryParam("playersId", ele).build())
                         .retrieve()
-                        .bodyToFlux(PlayersLottery.class).log()
+                        .bodyToFlux(PlayersLottery.class)
                         .collectList()
                         .zipWith(repository.count())
                         .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2())));
