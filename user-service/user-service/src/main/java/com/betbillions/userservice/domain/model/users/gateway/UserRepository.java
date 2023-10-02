@@ -15,5 +15,5 @@ public interface UserRepository {
     Mono<Page<References>> getAllReferenceTeam(UUID id);
     Mono<Page<Users>> getAllUsers(Pageable pageable);
     Mono<Users> getUserId(String id);
-    Flux<Users> getUsersGame(List<String> uuid);
+    Mono<Page<Users>> getUsersGame(Pageable pageable,List<String> uuid);
 }

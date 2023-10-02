@@ -38,14 +38,13 @@ public class UserHandler {
     }*/
 
     public Mono<ServerResponse> getPlayersGame(ServerRequest serverRequest) {
-        System.out.println("entra a este metodo");
         List<String> playersId = serverRequest.queryParams().get("playersId");
         if(playersId==null){
             playersId = Collections.emptyList();
         }
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(getPlayersGameUseCase.apply(playersId), Users.class);
+                .body(getPlayersGameUseCase.apply(Pagination.pagination(serverRequest),playersId), Users.class);
     }
 
 

@@ -93,8 +93,6 @@ ybingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/infrastru
 {bingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/infrastructure/driver/exception/CustomAttributes.java,c\5\c5d8f5e7e3cb257ac3cb1bafdb18fb3593557405
 ñ
 fbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/domain/model/enums/TypeGame.java,c\3\c36a0b769a16cd59da0787138756dd9d010043e2
-í
-bbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/BingoServiceApplication.java,d\a\dabcd550d00a43f1c2f7383e9d94c2cab4a23558
 §
 tbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/domain/usecase/lottery/SaveLotteryUseCase.java,0\f\0f9d560394fbbdf9b1c84109e36f0f7090454e1f
 ö
@@ -133,12 +131,8 @@ S
 |bingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/domain/usecase/cardbingo/ListCardBingoUserUseCase.java,7\4\74a0480e8282a659a316a01a12f5bee69ea0fff7
 ß
 wbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/domain/usecase/cardbingo/BuyCardBingoUseCase.java,5\9\59490f7dae1ffcde2db2402ba39f13ec52642ec1
-≤
-Åbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/infrastructure/driver/mongo/CardBingoRepositoryAdapter.java,e\9\e9b64e6d1654a6c9133e8c84f57ef201285a2408
 õ
 kwallet-service/wallet-service/src/main/java/com/betbillions/walletservice/application/config/ConfigApp.java,2\6\26195f1219fbe2fb4e8c3354cff5b6e7c18e5c9e
-ó
-gwallet-service/wallet-service/src/main/java/com/betbillions/walletservice/WalletServiceApplication.java,a\f\af94709f55938023ec0e1c2d4bbd2a8f5e4869fb
 ∂
 Öwallet-service/wallet-service/src/main/java/com/betbillions/walletservice/infrastructure/driver/exception/GlobalExceptionHandler.java,7\b\7beaf0cce1917280ec6249c2c058a279aa99fb8b
 ù

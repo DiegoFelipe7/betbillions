@@ -52,8 +52,11 @@ public class UserRepositoryAdapter extends ReactiveAdapterOperations<Users, User
     }
 
     @Override
-    public Flux<Users> getUsersGame(List<String> uuid) {
-        return repository.findByIdIn(uuid)
-                .map(UserMapper::usersEntityAUsers);
+    public Mono<Page<Users>> getUsersGame(Pageable pageable,List<String> uuid) {
+        return repository.findByIdIn(pageable,uuid)
+                .map(UserMapper::usersEntityAUsers)
+                .collectList()
+                .zipWith(repository.count())
+                .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2()));
     }
 }

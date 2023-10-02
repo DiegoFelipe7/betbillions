@@ -15,7 +15,7 @@ import java.util.UUID;
 public interface UsersReactiveRepository extends ReactiveCrudRepository<UserEntity, String>, ReactiveQueryByExampleExecutor<UserEntity> {
 
     Flux<UserEntity> findAllBy(Pageable pageable);
-    Flux<UserEntity> findByIdIn(List<String> uuid);
+    Flux<UserEntity> findByIdIn(Pageable pageable,List<String> uuid);
     @Query(value = """
     WITH RECURSIVE user_team AS (
       SELECT u.id, u.full_name, u.phone, u.username, u.created_at, 0 AS level
