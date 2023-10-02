@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table(name = "users")
 public class UserEntity {
     @Id
-    private UUID id;
+    private String id;
     private String username;
     private String email;
     private String fullName;

@@ -21,12 +21,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+
 import java.math.BigDecimal;
 
 
 @Repository
 public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery, LotteryEntity, Long, LotteryReactiveRepository> implements LotteryRepository {
     private final RoundRepository roundRepository;
+
 
     public LotteryRepositoryAdapter(LotteryReactiveRepository repository, RoundRepositoryAdapter roundRepository, ObjectMapper mapper) {
         super(repository, mapper, d -> mapper.mapBuilder(d, Lottery.LotteryBuilder.class).build());
@@ -84,15 +86,17 @@ public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery,
 
     @Override
     public Mono<Page<PlayersLottery>> getAllPlayers(Pageable pageable, String id) {
-        return repository.findAllByUuid(pageable, id)
+        System.out.println(id);
+        return repository.findByUuid(id)
                 .map(LotteryEntity::getPlayers)
                 .flatMap(ele -> WebClient.create().get()
-                            .uri("http://localhost:8081/api/users/", uriBuilder -> uriBuilder.queryParam("uuid", ele).build())
-                            .retrieve()
-                            .bodyToFlux(PlayersLottery.class)
-                            .collectList()
-                            .zipWith(repository.count())
-                            .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2())));
+                        .uri("http://localhost:8081/api/users/players", uriBuilder -> uriBuilder.queryParam("playersId", ele).build())
+                        .retrieve()
+                        .bodyToFlux(PlayersLottery.class).log()
+                        .collectList()
+                        .zipWith(repository.count())
+                        .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2())));
+
     }
 
 

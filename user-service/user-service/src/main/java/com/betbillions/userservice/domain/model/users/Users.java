@@ -11,7 +11,7 @@ import java.util.UUID;
 @Setter
 @Builder(toBuilder = true)
 public class Users {
-    private UUID id;
+    private String id;
     private String username;
     private String email;
     private String fullName;

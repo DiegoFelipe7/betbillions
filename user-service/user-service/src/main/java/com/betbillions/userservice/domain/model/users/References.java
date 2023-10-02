@@ -11,14 +11,14 @@ import java.time.LocalDateTime;
 @Builder(toBuilder = true)
 public class References {
 
-    private Integer id;
+    private String id;
     private String fullName;
     private Integer level;
     private String phone;
     private String userName;
     private LocalDateTime dateRegistered;
 
-    public References(Integer id, String fullName, String phone, String userName, LocalDateTime dateRegistered) {
+    public References(String id, String fullName, String phone, String userName, LocalDateTime dateRegistered) {
         this.id=id;
         this.fullName = fullName;
         this.phone = phone;
@@ -26,7 +26,7 @@ public class References {
         this.dateRegistered = dateRegistered;
     }
 
-    public References(Integer id, String fullName, Integer level, String userName, LocalDateTime dateRegistered) {
+    public References(String id, String fullName, Integer level, String userName, LocalDateTime dateRegistered) {
         this.id=id;
         this.fullName = fullName;
         this.level= level;

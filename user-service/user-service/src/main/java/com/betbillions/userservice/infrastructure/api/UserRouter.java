@@ -12,6 +12,8 @@ public class UserRouter {
     public RouterFunction<ServerResponse> routerFunction (UserHandler userHandler){
         return RouterFunctions.route()
                 .GET(API_PATH+"list", userHandler::getAllUsers)
+                .GET(API_PATH+"{uuid}" , userHandler::getUserId)
+                .GET(API_PATH+"players" , userHandler::getPlayersGame)
                 //.GET(API_PATH+"reference" , )
                 //.GET(API_PATH+"reference/team" , )
                 .build();

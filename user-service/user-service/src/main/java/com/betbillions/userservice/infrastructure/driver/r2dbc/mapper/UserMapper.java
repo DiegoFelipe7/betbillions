@@ -55,7 +55,7 @@ public class UserMapper {
 
     public static References referencesDirect(UserEntity users, Integer id) {
         return References.builder()
-                .id(id)
+                .id(users.getId())
                 .fullName(users.getFullName())
                 .phone(users.getPhone())
                 .userName(users.getFullName())
@@ -65,7 +65,7 @@ public class UserMapper {
 
     public static References referencesLevel(UserEntity users,Integer id) {
         return References.builder()
-                .id(id)
+                .id(users.getId())
                 .fullName(users.getFullName())
                 .level(users.getLevel())
                 .userName(users.getFullName())

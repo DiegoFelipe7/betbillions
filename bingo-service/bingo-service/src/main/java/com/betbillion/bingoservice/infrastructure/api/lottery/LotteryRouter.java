@@ -13,6 +13,7 @@ public class LotteryRouter {
         return RouterFunctions.route()
                 .GET(API_PATH+"list" , lotteryHandler::getAllLottery)
                 .GET(API_PATH+"{id}",lotteryHandler::getLotteryId)
+                .GET(API_PATH+"{id}/players" , lotteryHandler::getAllPlayers)
                 .POST(API_PATH+"create",lotteryHandler::saveLottery)
                 .PATCH(API_PATH+"inactive/{id}", lotteryHandler::inactiveLottery)
                 .build();
