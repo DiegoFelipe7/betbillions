@@ -10,6 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder(toBuilder = true)
+@ToString
 public class Users {
     private String id;
     private String username;

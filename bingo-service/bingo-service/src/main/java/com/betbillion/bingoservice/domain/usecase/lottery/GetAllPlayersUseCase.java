@@ -1,6 +1,6 @@
 package com.betbillion.bingoservice.domain.usecase.lottery;
 
-import com.betbillion.bingoservice.domain.model.lottery.PlayersLottery;
+import com.betbillion.bingoservice.domain.model.lottery.PlayersLotteryResponse;
 import com.betbillion.bingoservice.domain.model.lottery.gateway.LotteryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,10 +9,10 @@ import reactor.core.publisher.Mono;
 import java.util.function.BiFunction;
 
 @RequiredArgsConstructor
-public class GetAllPlayersUseCase implements BiFunction<Pageable , String, Mono<Page<PlayersLottery>>> {
+public class GetAllPlayersUseCase implements BiFunction<Pageable , String, Mono<PlayersLotteryResponse>> {
     private final LotteryRepository lotteryRepository;
     @Override
-    public Mono<Page<PlayersLottery>> apply(Pageable pageable , String uuid) {
+    public Mono<PlayersLotteryResponse> apply(Pageable pageable , String uuid) {
         return lotteryRepository.getAllPlayers(pageable,uuid);
     }
 }

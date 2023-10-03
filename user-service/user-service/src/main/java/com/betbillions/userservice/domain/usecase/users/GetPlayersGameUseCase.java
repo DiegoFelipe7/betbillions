@@ -15,7 +15,7 @@ public class GetPlayersGameUseCase implements BiFunction<Pageable, List<String> 
     private final UserRepository userRepository;
 
     @Override
-    public Mono<Page<Users>> apply(Pageable pagination, List<String> uuid) {
+    public  Mono<Page<Users>> apply(Pageable pagination, List<String> uuid) {
         return userRepository.getUsersGame(pagination,uuid);
     }
 }

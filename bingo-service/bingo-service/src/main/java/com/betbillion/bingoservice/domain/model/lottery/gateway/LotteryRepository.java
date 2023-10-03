@@ -1,9 +1,11 @@
 package com.betbillion.bingoservice.domain.model.lottery.gateway;
 
 
+import com.betbillion.bingoservice.domain.model.enums.StateLottery;
 import com.betbillion.bingoservice.domain.model.lottery.Lottery;
 import com.betbillion.bingoservice.domain.model.lottery.LotteryDto;
 import com.betbillion.bingoservice.domain.model.lottery.PlayersLottery;
+import com.betbillion.bingoservice.domain.model.lottery.PlayersLotteryResponse;
 import com.betbillion.bingoservice.domain.model.utils.Response;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +22,9 @@ public interface LotteryRepository {
 
     Mono<Response> inactivateLottery(String id);
     Mono<BigDecimal> priceLottery(String id);
-    Mono<Page<PlayersLottery>> getAllPlayers(Pageable pageable , String uuid);
+    Mono<PlayersLotteryResponse>getAllPlayers(Pageable pageable, String uuid);
+
+    Mono<LotteryDto> updateStateLottery(String uuid , StateLottery stateLottery);
 /*
 
     Mono<Lottery> getLotteryState();

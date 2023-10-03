@@ -11,8 +11,7 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface LotteryReactiveRepository extends ReactiveCrudRepository<LotteryEntity, Long>, ReactiveQueryByExampleExecutor<LotteryEntity> {
     Mono<LotteryEntity> findByUuid(String uuid);
-
-   // Mono<LotteryEntity> findByUuid(Pageable pageable, String uuid);
+    Mono<Long> countByStateLottery(String state);
 
     Flux<LotteryEntity> findAllBy(Pageable pageable);
 }

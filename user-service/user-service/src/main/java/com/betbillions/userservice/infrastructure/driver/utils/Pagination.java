@@ -1,4 +1,4 @@
-package com.betbillions.userservice.infrastructure.driver.utils;
+package com.betbillion.bingoservice.infrastructure.driver.utils;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,11 +10,15 @@ public class Pagination {
     private Pagination() {
         throw new IllegalStateException("Utility class");
     }
-
-    public static Pageable pagination(ServerRequest serverRequest){
-        Integer page = Integer.valueOf(serverRequest.queryParam("page").orElse("1"));
-        Integer size = Integer.valueOf(serverRequest.queryParam("size").orElse("10"));
-        String sort = serverRequest.queryParam("sort").orElse("id");
-        return PageRequest.of(page - 1, size, Sort.by(sort));
+    public static Pageable pagination(ServerRequest serverRequest) {
+        try {
+            Integer page = Integer.valueOf(serverRequest.queryParam("page").orElse("0"));
+            Integer size = Integer.valueOf(serverRequest.queryParam("size").orElse("10"));
+            String sort = serverRequest.queryParam("sort").orElse("id");
+            return PageRequest.of(page, size, Sort.by(sort));
+        } catch (Exception e) {
+            return PageRequest.of(0, 10, Sort.by("id"));
+        }
     }
 }
+

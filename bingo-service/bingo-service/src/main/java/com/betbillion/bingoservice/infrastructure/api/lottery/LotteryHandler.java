@@ -2,6 +2,7 @@ package com.betbillion.bingoservice.infrastructure.api.lottery;
 
 import com.betbillion.bingoservice.domain.model.lottery.Lottery;
 import com.betbillion.bingoservice.domain.model.lottery.LotteryDto;
+import com.betbillion.bingoservice.domain.model.lottery.PlayersLotteryResponse;
 import com.betbillion.bingoservice.domain.model.utils.Response;
 import com.betbillion.bingoservice.domain.usecase.lottery.*;
 import com.betbillion.bingoservice.infrastructure.driver.utils.Pagination;
@@ -25,21 +26,22 @@ public class LotteryHandler {
     private final GetLotteryIdUseCase getLotteryIdUseCase;
     private final InactiveLotteryUseCase inactiveLotteryUseCase;
     private final GetAllPlayersUseCase getAllPlayersUseCase;
+    private final UpdateStateLotteryUseCase updateStateLotteryUseCase;
+
     public Mono<ServerResponse> saveLottery(ServerRequest serverRequest) {
-         return serverRequest.bodyToMono(LotteryDto.class)
+        return serverRequest.bodyToMono(LotteryDto.class)
                 .flatMap(ele -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
                         .body(saveLotteryUseCase.apply(ele), Response.class));
     }
 
-    public Mono<ServerResponse> getAllLottery(ServerRequest serverRequest){
-        return  ServerResponse.ok()
+    public Mono<ServerResponse> getAllLottery(ServerRequest serverRequest) {
+        return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(getAllLotteryUseCase.apply(Pagination.pagination(serverRequest)),Lottery.class);
+                .body(getAllLotteryUseCase.apply(Pagination.pagination(serverRequest)), Lottery.class);
     }
 
     public Mono<ServerResponse> getLotteryId(ServerRequest serverRequest) {
         String id = serverRequest.pathVariable("id");
-        System.out.println(id);
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(getLotteryIdUseCase.apply(id), LotteryDto.class);
@@ -51,11 +53,20 @@ public class LotteryHandler {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(inactiveLotteryUseCase.apply(id), LotteryDto.class);
     }
+
     public Mono<ServerResponse> getAllPlayers(ServerRequest serverRequest) {
         String id = serverRequest.pathVariable("id");
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(getAllPlayersUseCase.apply(Pagination.pagination(serverRequest),id), LotteryDto.class);
+                .body(getAllPlayersUseCase.apply(Pagination.pagination(serverRequest), id), PlayersLotteryResponse.class);
+    }
+
+    public Mono<ServerResponse> updateStateLottery(ServerRequest serverRequest) {
+        String id = serverRequest.pathVariable("id");
+        return serverRequest.bodyToMono(Lottery.class).flatMap(ele ->
+                ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(updateStateLotteryUseCase.apply(id,ele.getState()), LotteryDto.class));
     }
 
 

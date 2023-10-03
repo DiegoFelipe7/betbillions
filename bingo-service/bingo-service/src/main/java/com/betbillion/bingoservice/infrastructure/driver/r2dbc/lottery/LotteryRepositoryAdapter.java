@@ -4,6 +4,7 @@ import com.betbillion.bingoservice.domain.model.enums.StateLottery;
 import com.betbillion.bingoservice.domain.model.lottery.Lottery;
 import com.betbillion.bingoservice.domain.model.lottery.LotteryDto;
 import com.betbillion.bingoservice.domain.model.lottery.PlayersLottery;
+import com.betbillion.bingoservice.domain.model.lottery.PlayersLotteryResponse;
 import com.betbillion.bingoservice.domain.model.lottery.gateway.LotteryRepository;
 import com.betbillion.bingoservice.domain.model.round.gateway.RoundRepository;
 import com.betbillion.bingoservice.domain.model.utils.Response;
@@ -23,6 +24,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 
 @Repository
@@ -51,7 +53,7 @@ public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery,
                 .filter(ele -> ele.getStateLottery().equals(StateLottery.PENDING))
                 .map(LotteryMapper::lotteryEntityALottery)
                 .collectList()
-                .zipWith(repository.count())
+                .zipWith(repository.countByStateLottery(StateLottery.PENDING.name()))
                 .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2()));
     }
 
@@ -59,11 +61,15 @@ public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery,
     public Mono<LotteryDto> getLotteryId(String id) {
         return repository.findByUuid(id)
                 .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "El Juego no existe", TypeStateResponse.Error)))
-                .flatMap(ele -> roundRepository.getAllRoundsLottery(ele.getUuid())
-                        .collectList()
-                        .map(res -> LotteryMapper.lotteryDto(ele, res)));
+                .flatMap(ele -> {
+                    if (ele.getStateLottery().equals(StateLottery.PENDING)) {
+                        return Mono.just(LotteryMapper.lotteryDto(ele, List.of()));
+                    }
+                    return roundRepository.getAllRoundsLottery(ele.getUuid())
+                            .collectList()
+                            .map(rounds -> LotteryMapper.lotteryDto(ele, rounds));
+                });
     }
-
     @Override
     public Mono<Response> inactivateLottery(String id) {
         return repository.findByUuid(id)
@@ -84,20 +90,34 @@ public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery,
                 .map(LotteryEntity::getPrice);
     }
 
-    @Override
-    public Mono<Page<PlayersLottery>> getAllPlayers(Pageable pageable, String id) {
-        return repository.findByUuid(id)
-                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST,"Id de la loteria invalida", TypeStateResponse.Error)))
-                .map(LotteryEntity::getPlayers)
-                .flatMap(ele -> WebClient.create().get()
-                        .uri("http://localhost:8081/api/users/players", uriBuilder -> uriBuilder.queryParam("playersId", ele).build())
-                        .retrieve()
-                        .bodyToFlux(PlayersLottery.class)
-                        .collectList()
-                        .zipWith(repository.count())
-                        .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2())));
 
+    @Override
+    public Mono<PlayersLotteryResponse> getAllPlayers(Pageable pageable, String id) {
+        return repository.findByUuid(id)
+                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "Id de la loteria invalida", TypeStateResponse.Error)))
+                .map(LotteryEntity::getPlayers)
+                .flatMap(ele ->
+                        WebClient.create().get()
+                                .uri("http://localhost:8081/api/users/players", uriBuilder -> uriBuilder
+                                        .queryParam("playersId", ele)
+                                        .queryParam("page", pageable.getPageNumber())
+                                        .queryParam("size", pageable.getPageSize())
+                                        .build())
+                                .retrieve()
+                                .bodyToMono(PlayersLotteryResponse.class));
     }
+
+    @Override
+    public Mono<LotteryDto> updateStateLottery(String uuid, StateLottery stateLottery) {
+        return repository.findByUuid(uuid)
+                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "El id de la lotería no existe", TypeStateResponse.Error)))
+                .flatMap(lottery -> {
+                    lottery.setStateLottery(stateLottery);
+                    return repository.save(lottery);
+                })
+                .flatMap(savedLottery -> getLotteryId(savedLottery.getUuid()));
+    }
+
 
 
 }

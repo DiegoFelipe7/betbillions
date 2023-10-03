@@ -8,6 +8,9 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.authentication.logout.DelegatingServerLogoutHandler;
+import org.springframework.security.web.server.authentication.logout.SecurityContextServerLogoutHandler;
+import org.springframework.security.web.server.authentication.logout.WebSessionServerLogoutHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
@@ -22,30 +25,19 @@ public class MainSecurity {
 
     @Bean
     public SecurityWebFilterChain filterChain(ServerHttpSecurity http, JwtFilter jwtFilter) {
+
         return http
-               .authorizeExchange()
-                .pathMatchers("/api/auth/**").permitAll()
-                .anyExchange().authenticated()
-                .and()
-                .addFilterAfter(jwtFilter, SecurityWebFiltersOrder.FIRST)
-                .securityContextRepository( securityContextRepository)
-                .formLogin().disable()
                 .csrf().disable()
+                .authorizeExchange(exchangeSpec -> {
+                    exchangeSpec.pathMatchers("/api/auth/**").permitAll()
+                            .anyExchange().permitAll();
+                })
+                .addFilterAfter(jwtFilter, SecurityWebFiltersOrder.FIRST)
+                .securityContextRepository(securityContextRepository)
+                .formLogin().disable()
                 .logout().disable()
                 .httpBasic().disable()
                 .build();
-    }
-
-    @Bean
-    CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET","POST","DELETE","PUT","OPTIONS","PATCH"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization","Access-Control-Allow-Methods", "Content-Type", "Access-Control-Allow-Origin"));
-        configuration.setExposedHeaders(Arrays.asList("Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
 }

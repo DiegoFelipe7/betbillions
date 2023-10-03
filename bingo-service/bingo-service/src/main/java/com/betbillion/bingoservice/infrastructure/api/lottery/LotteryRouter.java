@@ -16,6 +16,7 @@ public class LotteryRouter {
                 .GET(API_PATH+"{id}/players" , lotteryHandler::getAllPlayers)
                 .POST(API_PATH+"create",lotteryHandler::saveLottery)
                 .PATCH(API_PATH+"inactive/{id}", lotteryHandler::inactiveLottery)
+                .PATCH(API_PATH+"{id}/update-state", lotteryHandler::updateStateLottery)
                 .build();
     }
 

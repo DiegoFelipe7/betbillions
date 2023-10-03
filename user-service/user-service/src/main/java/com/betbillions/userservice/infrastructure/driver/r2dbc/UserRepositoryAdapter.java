@@ -53,10 +53,13 @@ public class UserRepositoryAdapter extends ReactiveAdapterOperations<Users, User
 
     @Override
     public Mono<Page<Users>> getUsersGame(Pageable pageable,List<String> uuid) {
-        return repository.findByIdIn(pageable,uuid)
+        Mono<Long> totalElements = repository.countByIdIn(uuid);
+        return repository.findByIdIn(pageable, uuid)
                 .map(UserMapper::usersEntityAUsers)
                 .collectList()
-                .zipWith(repository.count())
-                .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2()));
+                .flatMap(usersList -> totalElements
+                        .map(count -> new PageImpl<>(usersList, pageable, count))
+                );
     }
+
 }

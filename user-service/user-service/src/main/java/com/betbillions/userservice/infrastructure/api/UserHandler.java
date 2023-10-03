@@ -1,9 +1,9 @@
 package com.betbillions.userservice.infrastructure.api;
 
+import com.betbillion.bingoservice.infrastructure.driver.utils.Pagination;
 import com.betbillions.userservice.domain.model.users.References;
 import com.betbillions.userservice.domain.model.users.Users;
 import com.betbillions.userservice.domain.usecase.users.*;
-import com.betbillions.userservice.infrastructure.driver.utils.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ public class UserHandler {
     public Mono<ServerResponse> getAllUsers(ServerRequest serverRequest) {
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(getAllUsersUseCase.apply(Pagination.pagination(serverRequest)), References.class);
+                .body(getAllUsersUseCase.apply(Pagination.pagination(serverRequest)), Users.class);
     }
 
    /* public Mono<ServerResponse> getUserId(ServerRequest serverRequest) {

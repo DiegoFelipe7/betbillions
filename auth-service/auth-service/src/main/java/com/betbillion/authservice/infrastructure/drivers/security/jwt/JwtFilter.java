@@ -4,6 +4,7 @@ package com.betbillion.authservice.infrastructure.drivers.security.jwt;
 
 import com.betbillion.authservice.infrastructure.drivers.exception.CustomException;
 import com.betbillion.authservice.infrastructure.drivers.exception.TypeStateResponse;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,17 +21,17 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class JwtFilter implements WebFilter {
     @Override
-    public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    public Mono<Void> filter(ServerWebExchange exchange,@NonNull WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
 
-        if (CorsUtils.isPreFlightRequest(request)) {
+       /* if (CorsUtils.isPreFlightRequest(request)) {
             response.getHeaders().add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
             response.getHeaders().add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, PATCH, DELETE, OPTIONS");
             response.getHeaders().add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Authorization, Content-Type");
             response.setStatusCode(HttpStatus.OK);
             return Mono.empty();
-        }
+        }*/
         String path = request.getPath().value();
         if (path.contains("auth") ) {
             return chain.filter(exchange);

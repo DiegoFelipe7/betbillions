@@ -25,7 +25,6 @@ public class CustomAttributes extends DefaultErrorAttributes {
             errorAttributes.put("message", customException.getMessage());
             errorAttributes.put("typeStatus" , customException.getTypeStatus());
         }
-
         return errorAttributes;
     }
 }
