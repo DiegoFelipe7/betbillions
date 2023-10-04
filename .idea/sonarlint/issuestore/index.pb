@@ -87,8 +87,6 @@ xbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/domain/us
 ubingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/domain/usecase/lottery/GetLotteryIdUseCase.java,9\e\9e7f769ac1ea5e40e36ff8f478af6f9d382cbef3
 ®
 xbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/infrastructure/driver/r2dbc/round/RoundEntity.java,c\7\c71305931e7653e1066aa4aab379e54ba917cdf4
-µ
-Ñbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/infrastructure/driver/r2dbc/round/RoundReactiveRepository.java,9\c\9c45b38a142172e3b1aa49cc998df3042e40fb3c
 ú
 lbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/domain/model/cardbingo/BingoBalls.java,2\4\24b58d3d0da96d7bb167c28856f7e2a563679f61
 ≠
@@ -171,8 +169,6 @@ ruser-service/user-service/src/main/java/com/betbillions/userservice/domain/usec
 ouser-service/user-service/src/main/java/com/betbillions/userservice/domain/usecase/users/ReferencesUseCase.java,2\7\27c041a1f792f8f636232e2c134c1b5cb71ba0ab
 ì
 ceureka-server/eureka-server/src/main/java/com/betbillions/eurekaserver/EurekaServerApplication.java,8\0\804e6845527aed55e6fe741dcce4db0f34c1ce92
-°
-qbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/infrastructure/driver/config/AppConfig.java,2\5\25fd83183ad13cad0d7fae9d57c23307dd1e7371
 ≤
 Åbingo-service/bingo-service/src/main/java/com/betbillion/bingoservice/infrastructure/driver/exception/GlobalExceptionHandler.java,2\3\230fbe2c0e980294ed36c6567d5e42460fe6372f
 ≤

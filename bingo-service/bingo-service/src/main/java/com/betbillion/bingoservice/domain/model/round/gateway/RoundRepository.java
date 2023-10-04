@@ -1,5 +1,6 @@
 package com.betbillion.bingoservice.domain.model.round.gateway;
 import com.betbillion.bingoservice.domain.model.round.Round;
+import com.betbillion.bingoservice.domain.model.utils.Response;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -9,8 +10,10 @@ import java.util.UUID;
 public interface RoundRepository {
     Mono<Void> saveRounds(List<Round> round , String lotteryId);
     Flux<Round> getAllRoundsLottery(String id);
-
     Mono<Void> inactiveRounds(String id);
+    Mono<Round> updateState( String roundId,String lotteryId);
+    Mono<Round> startRound( String roundId,String lotteryId);
+    Mono<Response> noRoundWinner(String roundId,String lotteryId);
   /*  Mono<Round> getRoundId(Integer id);
     Mono<Round> getLotteryRound(String lottery)
     Mono<Round> getNumberRound(Integer id);

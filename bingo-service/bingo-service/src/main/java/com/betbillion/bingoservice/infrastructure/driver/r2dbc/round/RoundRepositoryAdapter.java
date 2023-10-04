@@ -3,14 +3,20 @@ package com.betbillion.bingoservice.infrastructure.driver.r2dbc.round;
 import com.betbillion.bingoservice.domain.model.enums.StateRound;
 import com.betbillion.bingoservice.domain.model.round.Round;
 import com.betbillion.bingoservice.domain.model.round.gateway.RoundRepository;
+import com.betbillion.bingoservice.domain.model.utils.Response;
+import com.betbillion.bingoservice.domain.model.utils.TypeStateResponses;
+import com.betbillion.bingoservice.infrastructure.driver.exception.CustomException;
+import com.betbillion.bingoservice.infrastructure.driver.exception.TypeStateResponse;
 import com.betbillion.bingoservice.infrastructure.driver.helper.ReactiveAdapterOperations;
 import com.betbillion.bingoservice.infrastructure.driver.r2dbc.lottery.LotteryReactiveRepository;
 import com.betbillion.bingoservice.infrastructure.driver.r2dbc.round.mapper.RoundMapper;
 import org.reactivecommons.utils.ObjectMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Repository
@@ -38,9 +44,11 @@ public class RoundRepositoryAdapter extends ReactiveAdapterOperations<Round, Rou
 
     @Override
     public Flux<Round> getAllRoundsLottery(String id) {
-        return repository.findAll().filter(ele -> ele.getIdLottery().equals(id))
+        return repository.findAll()
+                .filter(ele -> ele.getIdLottery().equals(id))
                 .filter(ele -> ele.getStateRound().equals(StateRound.WAITING))
-                .map(RoundMapper::roundEntityARound);
+                .map(RoundMapper::roundEntityARound)
+                .sort(Comparator.comparing(Round::getNumberRound));
     }
 
     @Override
@@ -53,4 +61,34 @@ public class RoundRepositoryAdapter extends ReactiveAdapterOperations<Round, Rou
                     return repository.save(ele);
                 }).then();
     }
+
+    @Override
+    public Mono<Round> updateState( String roundId,String lotteryId) {
+        return repository.findByUuidAndIdLottery(roundId,lotteryId)
+                .flatMap(ele -> {
+                    ele.setStateRound(StateRound.INITIATED);
+                    return repository.save(ele);
+                })
+                .map(RoundMapper::roundEntityARound);
+    }
+
+    @Override
+    public Mono<Round> startRound(String roundId, String lotteryId) {
+        return null;
+    }
+
+    @Override
+    public Mono<Response> noRoundWinner(String roundId, String lotteryId) {
+        return repository.findByUuidAndIdLottery(roundId, lotteryId)
+                .flatMap(ele -> {
+                    if (ele.getBalls().size() < 74) {
+                        return Mono.error(new CustomException(HttpStatus.CONFLICT, "La ronda no se puede terminar porque faltan balotas", TypeStateResponse.Warning));
+                    }
+                    ele.setCompleted(true);
+                    ele.setStateRound(StateRound.COMPLETED);
+                    return repository.save(ele)
+                            .thenReturn(new Response(TypeStateResponses.Success, "Ronda finalizada"));
+                });
+    }
+
 }

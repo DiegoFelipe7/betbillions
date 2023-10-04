@@ -8,6 +8,6 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public interface RoundReactiveRepository extends ReactiveCrudRepository<RoundEntity, Long>, ReactiveQueryByExampleExecutor<RoundEntity> {
-    Mono<RoundEntity> findByIdLotteryAndAndId(Integer lottery , Integer round);
-
+    Mono<RoundEntity> findByUuidAndIdLottery( String roundId,String lotteryId );
+    Mono<RoundEntity> findByUuid(String id);
 }

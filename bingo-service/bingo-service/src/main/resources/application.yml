@@ -1,4 +1,7 @@
 spring:
+  webflux:
+    websocket:
+      handler-mappings:
   r2dbc:
     url: r2dbc:postgresql://localhost/bingo
     username: postgres
