@@ -4,8 +4,10 @@ import com.betbillion.bingoservice.domain.model.lottery.Lottery;
 import com.betbillion.bingoservice.domain.model.lottery.LotteryDto;
 import com.betbillion.bingoservice.domain.model.lottery.PlayersLotteryResponse;
 import com.betbillion.bingoservice.domain.model.utils.Response;
+import com.betbillion.bingoservice.domain.model.utils.ResponseTrelloDTO;
 import com.betbillion.bingoservice.domain.usecase.lottery.*;
 import com.betbillion.bingoservice.infrastructure.driver.utils.Pagination;
+import com.betbillion.bingoservice.infrastructure.driver.utils.Pagination2;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -27,6 +29,7 @@ public class LotteryHandler {
     private final InactiveLotteryUseCase inactiveLotteryUseCase;
     private final GetAllPlayersUseCase getAllPlayersUseCase;
     private final UpdateStateLotteryUseCase updateStateLotteryUseCase;
+    private final PruebaUseCase pruebaUseCase;
 
     public Mono<ServerResponse> saveLottery(ServerRequest serverRequest) {
         return serverRequest.bodyToMono(LotteryDto.class)
@@ -67,6 +70,12 @@ public class LotteryHandler {
                 ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(updateStateLotteryUseCase.apply(id,ele.getState()), LotteryDto.class));
+    }
+
+    public Mono<ServerResponse> prueba(ServerRequest serverRequest) {
+       return ServerResponse.ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(pruebaUseCase.apply(Pagination2.pagination(serverRequest)), ResponseTrelloDTO.class);
     }
 
 

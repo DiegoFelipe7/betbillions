@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BuyCardBingoUseCase {
     private final CardBingoRepository cardBingoRepository;
-    public Mono<Response> apply(String token, List<CardBingo> cardBingo , String lotteryId) {
-        return cardBingoRepository.buyCardBingo(cardBingo,token,lotteryId);
+    public Mono<Response> apply(List<CardBingo> cardBingo ,String userId, String lotteryId) {
+        return cardBingoRepository.buyCardBingo(cardBingo,userId,lotteryId);
     }
 }

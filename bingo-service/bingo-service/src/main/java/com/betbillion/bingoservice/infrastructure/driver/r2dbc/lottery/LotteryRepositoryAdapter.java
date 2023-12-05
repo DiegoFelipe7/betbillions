@@ -3,17 +3,19 @@ package com.betbillion.bingoservice.infrastructure.driver.r2dbc.lottery;
 import com.betbillion.bingoservice.domain.model.enums.StateLottery;
 import com.betbillion.bingoservice.domain.model.lottery.Lottery;
 import com.betbillion.bingoservice.domain.model.lottery.LotteryDto;
-import com.betbillion.bingoservice.domain.model.lottery.PlayersLottery;
 import com.betbillion.bingoservice.domain.model.lottery.PlayersLotteryResponse;
 import com.betbillion.bingoservice.domain.model.lottery.gateway.LotteryRepository;
 import com.betbillion.bingoservice.domain.model.round.gateway.RoundRepository;
+import com.betbillion.bingoservice.domain.model.utils.Pagination;
 import com.betbillion.bingoservice.domain.model.utils.Response;
+import com.betbillion.bingoservice.domain.model.utils.ResponseTrelloDTO;
 import com.betbillion.bingoservice.domain.model.utils.TypeStateResponses;
 import com.betbillion.bingoservice.infrastructure.driver.exception.CustomException;
 import com.betbillion.bingoservice.infrastructure.driver.exception.TypeStateResponse;
 import com.betbillion.bingoservice.infrastructure.driver.helper.ReactiveAdapterOperations;
 import com.betbillion.bingoservice.infrastructure.driver.r2dbc.lottery.mapper.LotteryMapper;
 import com.betbillion.bingoservice.infrastructure.driver.r2dbc.round.RoundRepositoryAdapter;
+import com.betbillion.bingoservice.infrastructure.driver.utils.Pagination2;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
@@ -70,6 +73,7 @@ public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery,
                             .map(rounds -> LotteryMapper.lotteryDto(ele, rounds));
                 });
     }
+
     @Override
     public Mono<Response> inactivateLottery(String id) {
         return repository.findByUuid(id)
@@ -118,6 +122,28 @@ public class LotteryRepositoryAdapter extends ReactiveAdapterOperations<Lottery,
                 .flatMap(savedLottery -> getLotteryId(savedLottery.getUuid()));
     }
 
+    @Override
+    public Mono<Void> addPlayerLottery(String lotteryId, String userId) {
+        return repository.findByUuid(lotteryId)
+                .switchIfEmpty(Mono.error(new CustomException(HttpStatus.BAD_REQUEST, "La loteria no existe", TypeStateResponse.Warning)))
+                .flatMap(ele -> {
+                    ele.setId(ele.getId());
+                    ele.getPlayers().add(userId);
+                    return repository.save(ele);
+                }).then();
+    }
+
+    @Override
+    public Mono<ResponseTrelloDTO<List<Lottery>>> prueba(Pagination pagination) {
+        return repository.findAll()
+                .map(LotteryMapper::lotteryEntityALottery)
+                .skip(pagination.getOffset())
+                .take(pagination.getLimit())
+                .collectList()
+                .zipWith(repository.count())
+                .map(ele ->new ResponseTrelloDTO<List<Lottery>>(ele.getT1(), pagination.pagination(ele.getT2())));
+
+    }
 
 
 }

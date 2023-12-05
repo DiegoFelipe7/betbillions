@@ -3,7 +3,6 @@ package com.betbillion.authservice.infrastructure.drivers.auth;
 import com.betbillion.authservice.infrastructure.drivers.exception.CustomException;
 import com.betbillion.authservice.infrastructure.drivers.exception.TypeStateResponse;
 import com.betbillion.authservice.infrastructure.drivers.helpers.MessageHtml;
-import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -14,7 +13,7 @@ import org.thymeleaf.TemplateEngine;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-
+import javax.mail.internet.MimeMessage;
 
 
 @Service
@@ -57,7 +56,7 @@ public class EmailService {
 
         return Mono.fromRunnable(() -> {
             try {
-                message.setSubject("Recuperar contraseña bet billions");
+                message.setSubject("Recuperar contraseña betbillions");
                 MimeMessageHelper helper = new MimeMessageHelper(message, true);
                 helper.setFrom(emailSender);
                 helper.setTo(email);

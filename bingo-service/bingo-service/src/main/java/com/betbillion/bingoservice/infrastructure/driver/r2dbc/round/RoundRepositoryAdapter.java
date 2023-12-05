@@ -54,7 +54,7 @@ public class RoundRepositoryAdapter extends ReactiveAdapterOperations<Round, Rou
     @Override
     public Mono<Void> inactiveRounds(String id) {
         return repository.findAll()
-                .filter(ele -> ele.getIdLottery().equals(id)).log()
+                .filter(ele -> ele.getIdLottery().equals(id))
                 .flatMap(ele -> {
                     ele.setStateRound(StateRound.CANCELED);
                     ele.setCompleted(Boolean.TRUE);

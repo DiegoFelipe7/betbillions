@@ -1,6 +1,5 @@
 package com.betbillion.authservice.infrastructure.points.api;
 
-import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.server.RouterFunction;

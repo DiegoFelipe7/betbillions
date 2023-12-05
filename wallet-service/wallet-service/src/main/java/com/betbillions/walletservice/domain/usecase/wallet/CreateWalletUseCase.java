@@ -9,10 +9,10 @@ import java.util.function.Function;
 
 @RequiredArgsConstructor
 public class CreateWalletUseCase implements Function<Wallet , Mono<Void>> {
-    private final WalletRepository walletRepository;
+    private final WalletRepository rabbitConsumerRepository;
 
     @Override
     public Mono<Void> apply(Wallet wallet) {
-        return walletRepository.createWallet(wallet);
+        return rabbitConsumerRepository.createWallet(wallet);
     }
 }

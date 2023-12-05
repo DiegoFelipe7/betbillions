@@ -10,7 +10,8 @@ public class PaymentHistoryRouter {
     @Bean
     public RouterFunction<ServerResponse> routerFunctionPayment(PaymentHistoryHandler paymentHistoryHandler){
         return RouterFunctions.route()
-                .GET(API_PATH+"list" , paymentHistoryHandler::getHistoryUser)
+                .GET(API_PATH+"list" , paymentHistoryHandler::getAllHistory)
+                .GET(API_PATH+"list/user" , paymentHistoryHandler::getHistoryUser)
                 .build();
     }
 }

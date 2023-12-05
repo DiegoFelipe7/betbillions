@@ -34,7 +34,7 @@ public class AuthMapper {
 
     public static UsersEntity usersAUserEntity(Users users){
         return UsersEntity.builder()
-                .id(Utils.uid())
+                .id(users.getId())
                 .username(users.getUsername())
                 .email(users.getEmail())
                 .password(users.getPassword())

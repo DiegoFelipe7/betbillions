@@ -37,7 +37,7 @@ public class UsersEntity implements UserDetails {
     private String  roles;
     private String parentId;
     private Boolean status;
-    private Boolean validForCommissions;
+    private Boolean commission;
     private Integer level;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

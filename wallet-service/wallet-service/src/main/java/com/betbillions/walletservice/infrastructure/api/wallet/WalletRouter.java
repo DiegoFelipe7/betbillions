@@ -13,7 +13,10 @@ public class WalletRouter {
     public RouterFunction<ServerResponse> routerFunction(WalletHandler walletHandler){
         return RouterFunctions.route()
                 .GET(API_PATH+"list", walletHandler::getAllWallet)
-                .POST(API_PATH+"save" , walletHandler::createWallet)
+                .GET(API_PATH+"user/{id}" , walletHandler::getWalletUserId)
+                .PATCH(API_PATH+"shopping" , walletHandler::shopping)
+                .PATCH(API_PATH+"add-wallet" , walletHandler::addWallet)
+                .PATCH(API_PATH+"recharge",walletHandler::rechargeWallet)
                 .build();
     }
 }

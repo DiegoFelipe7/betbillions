@@ -15,8 +15,14 @@ public class PaymentHistory {
     private Long id;
     private BigDecimal balance ;
     private String currency;
-    private Integer userId;
+    private String userId;
     private TypeHistory typeHistory;
     private Boolean state;
     private LocalDateTime createdAt;
+
+    public PaymentHistory( String userId, BigDecimal balance,TypeHistory typeHistory) {
+        this.userId = userId;
+        this.balance = balance;
+        this.typeHistory = typeHistory;
+    }
 }

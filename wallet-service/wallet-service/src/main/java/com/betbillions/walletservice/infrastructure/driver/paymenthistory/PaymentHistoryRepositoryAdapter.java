@@ -22,20 +22,20 @@ public class PaymentHistoryRepositoryAdapter extends ReactiveAdapterOperations<P
     }
 
     @Override
-    public Mono<Void> saveHistory(Integer userId, BigDecimal balance, TypeHistory typeHistory) {
-        return null;
+    public Mono<Void> saveHistory(String userId, BigDecimal balance, TypeHistory typeHistory) {
+        PaymentHistory paymentHistory = new PaymentHistory(userId,balance,typeHistory);
+        return repository.save(PaymentHistoryMapper.paymentHistoryAPaymentHistoryEntity(paymentHistory)).then();
     }
 
     @Override
-    public Flux<PaymentHistory> listPayment(String token, Pageable pageable) {
-        return repository.findAllByUserId(token, pageable)
-                .map(PaymentHistoryMapper::paymentHistoryEntityAPaymentHistory);
+    public Mono<Page<PaymentHistory>> findAllUserPayments(String userId, Pageable pageable) {
+        return repository.findAllByUserId(userId, pageable)
+                .map(PaymentHistoryMapper::paymentHistoryEntityAPaymentHistory)
+                .collectList()
+                .zipWith(repository.count())
+                .map(p -> new PageImpl<>(p.getT1(), pageable, p.getT2()));
     }
 
-    @Override
-    public Flux<PaymentHistory> getAll(Pageable pageable) {
-        return null;
-    }
 
     @Override
     public Mono<Page<PaymentHistory>> findAllPaymentHistory(Pageable pageable) {

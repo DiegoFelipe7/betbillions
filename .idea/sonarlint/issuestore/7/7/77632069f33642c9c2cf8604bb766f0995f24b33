@@ -1,0 +1,17 @@
+
+I
+java:S1602",Remove useless curly braces around statement(Ÿ±“ó8õ¨õ°¯1
+š
+java:S1128"xRemove this unused import 'org.springframework.security.web.server.authentication.logout.DelegatingServerLogoutHandler'.(èá¿çùÿÿÿÿ8’´±¯1
+Ÿ
+java:S1128"}Remove this unused import 'org.springframework.security.web.server.authentication.logout.SecurityContextServerLogoutHandler'.(µ¾òüüÿÿÿÿ8’´±¯1
+š
+java:S1128"xRemove this unused import 'org.springframework.security.web.server.authentication.logout.WebSessionServerLogoutHandler'.(¢¶àÃüÿÿÿÿ8’´±¯1
+g
+java:S1128"KRemove this unused import 'org.springframework.web.cors.CorsConfiguration'.(î¤·`8Úÿ°¯1
+w
+java:S1128"ZRemove this unused import 'org.springframework.web.cors.reactive.CorsConfigurationSource'.(Ó»ÎÂ8Úÿ°¯1
+„
+java:S1128"bRemove this unused import 'org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource'.(œæòıÿÿÿÿ8Úÿ°¯1
+O
+java:S1128"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ8Úÿ°¯1

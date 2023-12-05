@@ -6,6 +6,7 @@ import com.betbillion.authservice.domain.model.auth.Token;
 import com.betbillion.authservice.domain.model.auth.Users;
 import com.betbillion.authservice.domain.model.auth.gateways.AuthRepository;
 import com.betbillion.authservice.domain.model.enums.Role;
+import com.betbillion.authservice.domain.model.subscriber.Subscriber;
 import com.betbillion.authservice.domain.model.utils.Response;
 import com.betbillion.authservice.domain.model.utils.TypeStateResponses;
 import com.betbillion.authservice.infrastructure.drivers.auth.mapper.AuthMapper;
@@ -14,6 +15,7 @@ import com.betbillion.authservice.infrastructure.drivers.exception.TypeStateResp
 import com.betbillion.authservice.infrastructure.drivers.helpers.ReactiveAdapterOperations;
 import com.betbillion.authservice.infrastructure.drivers.helpers.Utils;
 import com.betbillion.authservice.infrastructure.drivers.security.jwt.JwtProvider;
+import com.betbillion.authservice.infrastructure.drivers.subscriber.RabbitSubscriber;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -25,7 +27,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Repository
-public class AuthRepositoryAdapter extends ReactiveAdapterOperations<Users, UsersEntity, Integer, AuthReactiveRepository> implements AuthRepository {
+public class AuthRepositoryAdapter extends ReactiveAdapterOperations<Users, UsersEntity, String, AuthReactiveRepository> implements AuthRepository {
 
 
     private final EmailService emailService;
@@ -34,12 +36,14 @@ public class AuthRepositoryAdapter extends ReactiveAdapterOperations<Users, User
     private String url;
 
     private final JwtProvider jwtProvider;
+    private final RabbitSubscriber rabbitSubscriber;
 
-    public AuthRepositoryAdapter(AuthReactiveRepository repository, EmailService emailService, ObjectMapper mapper, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
+    public AuthRepositoryAdapter(AuthReactiveRepository repository, EmailService emailService,RabbitSubscriber rabbitSubscriber, ObjectMapper mapper, PasswordEncoder passwordEncoder, JwtProvider jwtProvider) {
         super(repository, mapper, d -> mapper.mapBuilder(d, Users.UsersBuilder.class).build());
         this.passwordEncoder = passwordEncoder;
         this.jwtProvider = jwtProvider;
         this.emailService = emailService;
+        this.rabbitSubscriber=rabbitSubscriber;
     }
 
 
@@ -84,6 +88,7 @@ public class AuthRepositoryAdapter extends ReactiveAdapterOperations<Users, User
                     user.setParentId(parent.getParentId());
                     UsersEntity userEntity = AuthMapper.usersAUserEntity(user);
                     return repository.save(userEntity)
+                            .flatMap(ele->rabbitSubscriber.createWallet(new Subscriber(ele.getId())))
                             .then(emailService.sendEmailWelcome(userEntity.getFullName(), userEntity.getEmail(), userEntity.getToken()))
                             .thenReturn(new Response(TypeStateResponses.Success, "Se ha enviado un correo electrónico para la activación de tu cuenta."));
                 });

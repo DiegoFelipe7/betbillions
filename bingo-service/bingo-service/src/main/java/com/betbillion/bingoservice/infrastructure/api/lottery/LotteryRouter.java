@@ -11,6 +11,7 @@ public class LotteryRouter {
     @Bean
     public RouterFunction<ServerResponse> routerFunction(LotteryHandler lotteryHandler){
         return RouterFunctions.route()
+                .GET(API_PATH+"prueba", lotteryHandler::prueba)
                 .GET(API_PATH+"list" , lotteryHandler::getAllLottery)
                 .GET(API_PATH+"{id}",lotteryHandler::getLotteryId)
                 .GET(API_PATH+"{id}/players" , lotteryHandler::getAllPlayers)

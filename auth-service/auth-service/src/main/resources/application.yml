@@ -5,17 +5,17 @@ spring:
     suffix: .html
     check-template-location: false
   r2dbc:
-    url: r2dbc:postgresql://postgres/auth
+    url: r2dbc:postgresql://localhost/auth
     username: postgres
     password: postgres
   application:
     name: auth-service
-  #rabbitmq:
-   # host: localhost
-    #port: 5672
-    #username: guest
-    #password: guest
-    #virtual-host: /
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
 jwt:
   secret: 76397924423F4528482B4D6251655468576D5A7134743777217A25432A46294A
   expiration: 3600

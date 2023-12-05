@@ -22,4 +22,8 @@ public class Wallet {
     private String currency;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public Wallet(String userId) {
+        this.userId = userId;
+    }
 }

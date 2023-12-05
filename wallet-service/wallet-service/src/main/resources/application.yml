@@ -1,3 +1,5 @@
+server:
+  port: 8081
 spring:
   thymeleaf:
     enabled: true
@@ -10,4 +12,11 @@ spring:
     password: postgres
   application:
     name: wallet-service
-
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+    virtual-host: "/"
+  profiles:
+      include: null

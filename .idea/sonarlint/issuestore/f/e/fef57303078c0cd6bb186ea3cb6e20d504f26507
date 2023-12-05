@@ -1,3 +1,7 @@
 
-X	java:S125R"<This block of commented-out lines of code should be removed.(–ƒË 8Ÿêê­1
-]	java:S125g"<This block of commented-out lines of code should be removed.(ÉáŸüÿÿÿÿ8 êê­1
+u
+java:S1602G"SRemove useless curly braces around statement and then remove useless return keyword(„ê´øÿÿÿÿ8ø«‹Å¶1
+X	java:S125^"<This block of commented-out lines of code should be removed.(–ƒË 8ı«‹Å¶1
+]	java:S125t"<This block of commented-out lines of code should be removed.(Š š¼úÿÿÿÿ8ı«‹Å¶1
+Q
+java:S1068"4Remove this unused "URL_MICROSERVICE" private field.(¶Š8ÿ«‹Å¶1
